@@ -9,7 +9,9 @@
     "rag:case1": "tsx \"test/rag/case1-direct-rag-example.ts\"",
     "rag:case2": "tsx \"test/rag/case2-agent-rag-example.ts\"",
     "rag:case3": "tsx \"test/rag/case3-agent-mcp-example.ts\"",
-    "rag:sop": "tsx \"test/rag/sop-agent-mcp-example.ts\"",
+    "rag:tools": "tsx \"test/rag/shop-agent-tools.ts\"",
+    "rag:cli": "tsx \"test/rag/shop-multiagent-mcp-cli.ts\"",
+    "rag:server": "tsx \"test/rag/shop-multiagent-mcp-server.ts\"",
     "test-mcp-io": "tsx test/mcp/test-mcp-io-client.ts",
     "test-mcp-http": "tsx test/mcp/test-mcp-http-client.ts",
     "elasticsearch:start": "docker-compose -f scripts/es-mcp/docker-compose.yml up --build",
@@ -20,7 +22,8 @@
     "chroma:console": "tsx src/chroma/query-console.ts",
     "chroma:mcp:http": "NODE_NO_WARNINGS=1 node --import tsx/esm src/chroma/chroma-mcp-http-server.ts",
     "data:setup": "tsx src/rag/setup-data.ts",
-    "chroma:data:setup": "tsx src/chroma/setup-data.ts"
+    "chroma:data:setup": "tsx src/chroma/setup-data.ts",
+    "readline": "tsx test/rag/readline.ts"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
@@ -33,7 +36,9 @@
     "@langchain/mcp-adapters": "^1.0.0",
     "@langchain/openai": "^1.0.0-alpha.3",
     "@modelcontextprotocol/sdk": "^1.20.1",
+    "@types/chalk": "^0.4.31",
     "@types/node-fetch": "^2.6.13",
+    "chalk": "^5.6.2",
     "chromadb": "^3.1.6",
     "chromadb-default-embed": "^2.14.0",
     "dotenv": "^17.2.3",

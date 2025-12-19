@@ -5,6 +5,11 @@ import { ChromaClient, getEmbeddingFunction } from 'chromadb';
 import express from 'express';
 import { z } from 'zod';
 
+let cart:any[] = [];
+let order = {};
+let proceedCheckout = false;
+
+
 // ChromaDB client configuration
 const chromaUrl = process.env.CHROMA_URL || 'http://localhost:8000';
 const url = new URL(chromaUrl);
@@ -129,6 +134,124 @@ mcp.registerTool(
             content: [{
                 type: "text",
                 text: JSON.stringify(info, null, 2),
+            }],
+        };
+    }
+);
+
+
+mcp.registerTool(
+    'add_to_cart',
+    {
+        title: 'Add product to cart',
+        description: 'Add a product to the cart',
+        inputSchema: { 
+            productID: z.number(),
+            productName: z.string(),
+            quantity: z.number(), 
+        }
+    },
+    async ({ productID = 1, productName, quantity = 1}) => {
+        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
+        
+        cart.push({productID, productName, quantity});
+        
+        let addedProduct = {productID, productName, quantity};
+        
+        console.error('Added 1 item to cart');
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify(addedProduct, null, 2),
+            }],
+        };
+    }
+);
+
+mcp.registerTool(
+    'view_cart',
+    {
+        title: 'View items in cart',
+        description: 'View the items of the cart',
+        inputSchema: {}
+    },
+    async () => {
+        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
+        
+        
+        let viewCart = {cartItems: cart};
+        
+        console.error('Added 1 item to cart');
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify(viewCart, null, 2),
+            }],
+        };
+    }
+);
+
+mcp.registerTool(
+    'empty_cart',
+    {
+        title: 'Empty cart',
+        description: 'Delete all the items of the cart',
+        inputSchema: {}
+    },
+    async () => {
+        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
+        
+        
+        cart.length = 0;
+        
+        console.error('Cart is empty');
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify('Cart is empty', null, 2),
+            }],
+        };
+    }
+);
+
+mcp.registerTool(
+    'proceed_to_checkout',
+    {
+        title: 'Proceed to checkout',
+        description: 'Proceed to checkout. Set checkout variable to true',
+        inputSchema: {}
+    },
+    async () => {
+        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
+        
+        proceedCheckout = true
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify('Proceed to checkout', null, 2),
+            }],
+        };
+    }
+);
+mcp.registerTool(
+    'retrieve_checkout_value',
+    {
+        title: 'Retieve checkout value',
+        description: 'Get the value of the proceedToCheckout value',
+        inputSchema: {}
+    },
+    async () => {
+        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
+        
+
+        return {
+            content: [{
+                type: "text",
+                text: JSON.stringify(proceedCheckout, null, 2),
             }],
         };
     }

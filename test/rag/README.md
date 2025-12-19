@@ -35,7 +35,7 @@ Intefase Grafica: Linea de comandos
 
 Observaciones: En este caso, se realizo una evolucion del caso 1 agregando un servidor MCP con una gama de herramientas que son utilizados por ambos agentes, entre ellas, busqueda de productos; agregar, retirar items del carrito o visualizar el estado actual del carrito. 
 
-Archivo: shop-multiagent-mcp-cli-copytools.ts
+Archivo: shop-multiagent-mcp-cli.ts
 
 
 

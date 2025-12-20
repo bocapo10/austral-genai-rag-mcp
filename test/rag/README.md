@@ -21,7 +21,7 @@ Archivo: shop-agent-tools.ts
 
 Uso
 
-script para ejecutarlo 
+Ejecutar script 
 yarn rag:tools
 
 
@@ -47,7 +47,7 @@ Uso
 Iniciar Servicio ChromaDB y MCP server
 yarn chroma:start
 
-Ejecutar script
+Ejecutar script 
 yarn rag:cli
 
 
@@ -75,7 +75,7 @@ Uso
 Iniciar Servicio ChromaDB y MCP server
 yarn chroma:start
 
-Ejecutar script
+Ejecutar script 
 yarn rag:server
 
 

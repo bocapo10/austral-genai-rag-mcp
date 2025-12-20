@@ -23,7 +23,7 @@ let mcpClient: MultiServerMCPClient | null = null;
 
 
 const styledPromptShopping = chalk.hex('#FF4500').bold('Query Shopping Assistant> '); // OrangeRed color, bold text
-const styledPromptCheckout = chalk.hex('#0a982eff').bold('Query Shopping Assistant> '); // Green color, bold text
+const styledPromptCheckout = chalk.hex('#0a982eff').bold('Query Checkout Assistant> '); // Green color, bold text
 
 
 

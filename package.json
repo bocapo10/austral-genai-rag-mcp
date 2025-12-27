@@ -4,7 +4,6 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc",
     "mcp:elasticsearch": "NODE_NO_WARNINGS=1 node --import tsx/esm src/rag/elasticsearch-mcp-http-server.ts",
     "rag:case1": "tsx \"test/rag/case1-direct-rag-example.ts\"",
     "rag:case2": "tsx \"test/rag/case2-agent-rag-example.ts\"",

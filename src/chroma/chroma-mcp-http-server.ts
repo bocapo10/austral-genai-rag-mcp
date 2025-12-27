@@ -308,8 +308,9 @@ app.post('/mcp', async (req, res) => {
     await transport.handleRequest(req, res, req.body);
 });
 
+
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT,"::",10, () => {
     console.log('🚀 ChromaDB MCP HTTP Server Started');
     console.log(`Server: http://localhost:${PORT}`);
     console.log(`Endpoint: POST http://localhost:${PORT}/mcp (JSON-RPC)`);

@@ -3,7 +3,6 @@ import { createAgent } from "langchain";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOpenAI } from "@langchain/openai";
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import * as readline from 'readline/promises';
 import express from 'express';
 
 
@@ -42,11 +41,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
  * 4. Start corresponding MCP server: yarn mcp:elasticsearch (for Elasticsearch)
  */
 
-// Create readline interface
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+
 
 const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
 console.log('MCP Server URL:',MCP_SERVER_URL)
@@ -80,13 +75,13 @@ When helping customers:
 Use the search tools to find products in our catalog.`;
 
 // Create MCP client that connects to HTTP server
-        //console.log(`🔌 Connecting to MCP HTTP server at ${MCP_SERVER_URL}...`);
-        mcpClient = new MultiServerMCPClient({
-            elasticsearch: {
-                type: "http",
-                url: MCP_SERVER_URL
-            }
-        });
+//console.log(`🔌 Connecting to MCP HTTP server at ${MCP_SERVER_URL}...`);
+mcpClient = new MultiServerMCPClient({
+    elasticsearch: {
+        type: "http",
+        url: MCP_SERVER_URL
+    }
+});
 
 // Initialize and get tools - automatically converted to LangChain format
 await mcpClient.initializeConnections();

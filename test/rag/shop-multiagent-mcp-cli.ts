@@ -14,7 +14,8 @@ import {
   SystemMessage,
   ToolMessage,
   HumanMessage,
-  BaseMessage
+  BaseMessage,
+  AIMessage
 } from "@langchain/core/messages";
 
 
@@ -203,7 +204,7 @@ function shouldContinue(state: State) {
 
   if(state.checkout){
     return "checkoutAssistant"
-  }else if (lastMessage?.tool_calls?.length) {
+  }else if (AIMessage.isInstance (lastMessage) && lastMessage?.tool_calls?.length) {
   // If the LLM makes a tool call, then perform an action
     return "toolNodeShopping";
   }
@@ -215,7 +216,7 @@ function shouldContinueCheckout(state: State) {
   const lastMessage = messages.at(-1);
 
 
-  if (lastMessage?.tool_calls?.length) {
+  if (AIMessage.isInstance(lastMessage) && lastMessage?.tool_calls?.length) {
   // If the LLM makes a tool call, then perform an action
     return "toolNodeCheckout";
   }

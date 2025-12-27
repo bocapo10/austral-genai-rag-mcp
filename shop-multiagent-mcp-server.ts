@@ -48,8 +48,8 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-const MCP_SERVER_URL = 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
-
+const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
+console.log('MCP Server URL:',MCP_SERVER_URL)
 // AI model
 // const model = new ChatGoogleGenerativeAI({
 //     model: "gemini-2.5-flash",

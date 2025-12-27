@@ -22,7 +22,7 @@
     "chroma:mcp:http": "tsx watch src/chroma/chroma-mcp-http-server.ts",
     "data:setup": "tsx src/rag/setup-data.ts",
     "chroma:data:setup": "tsx src/chroma/setup-data.ts",
-    "start": "tsx test/rag/shop-multiagent-mcp-server.ts"
+    "start": "tsx shop-multiagent-mcp-server.ts"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",

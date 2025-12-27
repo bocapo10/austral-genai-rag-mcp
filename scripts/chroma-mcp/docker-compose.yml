@@ -2,7 +2,7 @@ services:
   chroma:
     image: chromadb/chroma:1.2.1
     container_name: chromaDB
-    ports:
+    ports:    
       - "8000:8000"
     volumes:
       - chroma_data:/chroma/chroma
@@ -24,6 +24,7 @@ services:
     build:
       context: ../..
       dockerfile: scripts/chroma-mcp/Dockerfile
+    platform: "linux/amd64"
     container_name: chroma-data-init
     depends_on:
       - chroma
@@ -39,7 +40,17 @@ services:
     build:
       context: ../..
       dockerfile: scripts/chroma-mcp/Dockerfile
+    platform: "linux/amd64"
     container_name: chroma-mcp-server
+    # volumes:
+    #   - type: bind
+    #     source: ../..
+    #     target: /app
+    #     # Optional: make the mount read-only
+    #     read_only: true 
+    #   - type: volume
+    #     source: node_modules_volume # Use a named volume for better performance/persistence
+    #     target: /app/node_modules
     depends_on:
       - chroma
     ports:
@@ -54,6 +65,8 @@ services:
 volumes:
   chroma_data:
     driver: local
+  # node_modules_volume:
+  #   driver: local
 
 networks:
   chroma:

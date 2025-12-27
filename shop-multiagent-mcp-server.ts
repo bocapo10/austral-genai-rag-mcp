@@ -77,12 +77,13 @@ Use the search tools to find products in our catalog.`;
 // Create MCP client that connects to HTTP server
 //console.log(`🔌 Connecting to MCP HTTP server at ${MCP_SERVER_URL}...`);
 mcpClient = new MultiServerMCPClient({
-    elasticsearch: {
+    chromaDB: {
         type: "http",
         url: MCP_SERVER_URL
     }
 });
 
+console.log("MCP client initialized");
 // Initialize and get tools - automatically converted to LangChain format
 await mcpClient.initializeConnections();
 const tools = await mcpClient.getTools();

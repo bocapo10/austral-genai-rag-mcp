@@ -20,10 +20,10 @@
     "chroma:start": "docker-compose -f scripts/chroma-mcp/docker-compose.yml up --build",
     "chroma:stop": "docker-compose -f scripts/chroma-mcp/docker-compose.yml down",
     "chroma:console": "tsx src/chroma/query-console.ts",
-    "chroma:mcp:http": "NODE_NO_WARNINGS=1 node --import tsx/esm src/chroma/chroma-mcp-http-server.ts",
+    "chroma:mcp:http": "tsx watch src/chroma/chroma-mcp-http-server.ts",
     "data:setup": "tsx src/rag/setup-data.ts",
     "chroma:data:setup": "tsx src/chroma/setup-data.ts",
-    "readline": "tsx test/rag/readline.ts"
+    "start": "tsx test/rag/shop-multiagent-mcp-server.ts"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "@types/node": "^24.9.1"
+    "@types/node": "^24.9.1",
+    "nodemon": "^3.1.11"
   }
 }

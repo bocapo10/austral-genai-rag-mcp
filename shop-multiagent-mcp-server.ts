@@ -97,7 +97,7 @@ console.log();
 const agent = createAgent({
             model,
             systemPrompt,
-            tools
+            //tools
         });
 
 async function runAgent(userPrompt:string) {

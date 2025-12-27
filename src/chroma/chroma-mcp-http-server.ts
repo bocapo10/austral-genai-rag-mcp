@@ -17,9 +17,11 @@ const chromaClient = new ChromaClient({
     path: chromaUrl
 });
 
+console.log('Chroma URL:',chromaUrl)
 // MCP HTTP Server Port
 const PORT = process.env.PORT || 8001;
 
+console.log('Port:',PORT)
 // Create Express app
 const app = express();
 app.use(express.json());
@@ -154,16 +156,48 @@ mcp.registerTool(
     async ({ productID = 1, productName, quantity = 1}) => {
         //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
         
-        cart.push({productID, productName, quantity});
+        for(let count = 0; count < quantity; count++){
+            cart.push({productID, productName, quantity:1});
+        }
+        
         
         let addedProduct = {productID, productName, quantity};
         
-        console.error('Added 1 item to cart');
+        console.error(`Added ${productName} to cart`);
 
         return {
             content: [{
                 type: "text",
                 text: JSON.stringify(addedProduct, null, 2),
+            }   ],
+        };
+    }
+);
+
+mcp.registerTool(
+    'remove item from cart',
+    {
+        title: 'Remove an item from cart',
+        description: 'Remove an item from cart',
+        inputSchema: { 
+            productID: z.number(),
+            productName: z.string(),
+            quantity: z.number(), 
+        }
+    },
+    async ({ productID = 1, productName, quantity = 1}) => {
+        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
+        
+        let index = cart.findIndex(item => productName == item.name)
+        cart.splice(index,1); 
+        
+        
+        console.error(`Removed ${productName} from cart`);
+
+        return {
+            content: [{
+                type: "text",
+                text: `Deleted ${productName} from cart`,
             }],
         };
     }
@@ -182,7 +216,7 @@ mcp.registerTool(
         
         let viewCart = {cartItems: cart};
         
-        console.error('Added 1 item to cart');
+        cart.forEach(item => console.log(item));
 
         return {
             content: [{
@@ -217,6 +251,7 @@ mcp.registerTool(
     }
 );
 
+
 mcp.registerTool(
     'proceed_to_checkout',
     {
@@ -237,25 +272,7 @@ mcp.registerTool(
         };
     }
 );
-mcp.registerTool(
-    'retrieve_checkout_value',
-    {
-        title: 'Retieve checkout value',
-        description: 'Get the value of the proceedToCheckout value',
-        inputSchema: {}
-    },
-    async () => {
-        //console.error('🔍 Querying ChromaDB:', { collection, query, n_results });
-        
 
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify(proceedCheckout, null, 2),
-            }],
-        };
-    }
-);
 
 // Add health check endpoint
 app.get('/health', async (req, res) => {
@@ -293,19 +310,19 @@ app.post('/mcp', async (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.error('🚀 ChromaDB MCP HTTP Server Started');
-    console.error(`Server: http://localhost:${PORT}`);
-    console.error(`Endpoint: POST http://localhost:${PORT}/mcp (JSON-RPC)`);
-    console.error(`Health: GET http://localhost:${PORT}/health`);
-    console.error('');
-    console.error('Available tools:');
-    console.error('  - chroma_query_collection: Semantic search');
-    console.error('  - chroma_list_collections: List all collections');
-    console.error('  - chroma_get_collection_info: Get collection info');
-    console.error('');
-    console.error('💡 Test with:');
-    console.error(`   curl -X POST http://localhost:${PORT}/mcp -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`);
-    console.error('');
-    console.error('Ready to accept connections...');
+    console.log('🚀 ChromaDB MCP HTTP Server Started');
+    console.log(`Server: http://localhost:${PORT}`);
+    console.log(`Endpoint: POST http://localhost:${PORT}/mcp (JSON-RPC)`);
+    console.log(`Health: GET http://localhost:${PORT}/health`);
+    console.log('');
+    console.log('Available tools:');
+    console.log('  - chroma_query_collection: Semantic search');
+    console.log('  - chroma_list_collections: List all collections');
+    console.log('  - chroma_get_collection_info: Get collection info');
+    console.log('');
+    console.log('💡 Test with:');
+    console.log(`   curl -X POST http://localhost:${PORT}/mcp -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`);
+    console.log('');
+    console.log('Ready to accept connections...');
 });
 

@@ -84,9 +84,9 @@ mcpClient = new MultiServerMCPClient({
 });
 
 console.log("MCP client initialized");
-// Initialize and get tools - automatically converted to LangChain format
-// await mcpClient.initializeConnections();
-// const tools = await mcpClient.getTools();
+//Initialize and get tools - automatically converted to LangChain format
+await mcpClient.initializeConnections();
+const tools = await mcpClient.getTools();
 
 //console.log(`✅ Loaded ${tools.length} tools from MCP:\n`);
 //tools.forEach(tool => console.log(`   - ${tool.name}: ${tool.description}`));

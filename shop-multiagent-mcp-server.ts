@@ -4,6 +4,7 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOpenAI } from "@langchain/openai";
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 import express from 'express';
+import { object } from 'zod';
 
 
 const state:any[] = [];
@@ -41,25 +42,29 @@ app.use(express.json()); // Middleware to parse JSON bodies
  * 4. Start corresponding MCP server: yarn mcp:elasticsearch (for Elasticsearch)
  */
 
-
+let model:any = {}
 
 const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
-console.log('MCP Server URL:',MCP_SERVER_URL)
-// AI model
-// const model = new ChatGoogleGenerativeAI({
-//     model: "gemini-2.5-flash",
-//     temperature: 0,
-//     apiKey: process.env.GOOGLE_API_KEY,
-// });
 
-//Ai Model
-const model = new ChatOpenAI({
-  modelName: "openai/gpt-oss-20b",
-  temperature: 0.7,
-  configuration: {
-  baseURL: "http://127.0.0.1:1234/v1",
-  }
-});
+if(process.env.MCP_SERVER_URL){
+    //AI model - production
+    model = new ChatGoogleGenerativeAI({
+        model: "gemini-2.5-flash",
+        temperature: 0,
+        apiKey: process.env.GOOGLE_API_KEY,
+    });
+}else{
+    //Ai Model - development
+    model = new ChatOpenAI({
+        modelName: "openai/gpt-oss-20b",
+        temperature: 0.7,
+        configuration: {
+            baseURL: "http://127.0.0.1:1234/v1",
+        }
+    });
+}
+console.log('MCP Server URL:',MCP_SERVER_URL)
+
 
 
 

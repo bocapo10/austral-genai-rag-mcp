@@ -15,7 +15,7 @@ Tecnologias principales: Se utilizo un LLM de OpenAI como motor de IA del agente
 
 Interfase Grafica: Linea de comandos
 
-Observaciones: Este ejemplo se desarollo para entender el funcionamiento del LLM. Unicamente se uso un systemp prompt para establecer el comportamiento esperado. El Agente se encarga de todo el proceso desde busqueda de productos hasta el envio final. 
+Observaciones: Este ejemplo se desarollo para entender el funcionamiento del LLM. Unicamente se uso un system prompt para establecer el comportamiento esperado. El Agente se encarga de todo el proceso desde busqueda de productos hasta el envio final. 
 
 Archivo: shop-agent-tools.ts
 

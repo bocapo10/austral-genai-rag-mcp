@@ -8,13 +8,19 @@ import { object } from 'zod';
 
 
 const state:any[] = [];
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
+let model:any = {}
 let mcpClient: MultiServerMCPClient | null = null;
 
+//const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
+const MCP_SERVER_URL = "https://chroma-mcp-server-production.up.railway.app/mcp"
+const PORT = process.env.PORT || 3000;
+
+
+const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
+
+
+
 
 
 
@@ -42,12 +48,10 @@ app.use(express.json()); // Middleware to parse JSON bodies
  * 4. Start corresponding MCP server: yarn mcp:elasticsearch (for Elasticsearch)
  */
 
-let model:any = {}
 
-const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
-
-if(process.env.MCP_SERVER_URL){
+if(MCP_SERVER_URL){
     //AI model - production
+    console.log('using GeminiAI');
     model = new ChatGoogleGenerativeAI({
         model: "gemini-2.5-flash",
         temperature: 0,
@@ -55,6 +59,7 @@ if(process.env.MCP_SERVER_URL){
     });
 }else{
     //Ai Model - development
+    console.log('using OpenAI');
     model = new ChatOpenAI({
         modelName: "openai/gpt-oss-20b",
         temperature: 0.7,
@@ -110,7 +115,7 @@ async function runAgent(userPrompt:string) {
         //Run Agent with User Prompt
         state.push({ role: "user", content: userPrompt })
         const response1 = await agent.invoke({messages: state});
-    
+
         for(let res of response1.messages){
             state.push(res);
         }
@@ -131,6 +136,7 @@ app.get('/status', (req, res) => {
 app.post('/api/agent', async (req, res) => {
     const { prompt } = req.body; // Expecting a JSON body like { "prompt": "your query" }
 
+    console.log("prompt received",prompt)
     if (!prompt) {
         return res.status(400).json({ error: 'Prompt is required in the request body' });
     }

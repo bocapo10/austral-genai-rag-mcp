@@ -175,7 +175,7 @@ mcp.registerTool(
 );
 
 mcp.registerTool(
-    'remove item from cart',
+    'remove_item_from_cart',
     {
         title: 'Remove an item from cart',
         description: 'Remove an item from cart',

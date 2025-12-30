@@ -78,6 +78,9 @@ Realizar POST request al URL:
 
 https://shopping-assistant-agent-service-production.up.railway.app/api/agent
 
+Header
+Content-Type: application/json
+
 Body:
 {
     "prompt":"user prompt"

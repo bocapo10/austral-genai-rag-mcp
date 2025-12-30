@@ -82,7 +82,7 @@ Consumo a traves de Servidor API
 Archivo:  
 shop-multiagent-mcp-server.ts
 
-Uso:
+Uso:  
 Realizar POST request al URL: 
 
 https://shopping-assistant-agent-service-production.up.railway.app/api/agent

@@ -157,10 +157,10 @@ async function runAgent(userPrompt:string,res:any) {
         for await (const chunk of response1) {
             // Write each token chunk as an SSE data event
             if(chunk[0].constructor.name === 'AIMessageChunk' && chunk[0].content){
-                    htmlSafeString = chunk[0].content.replace(/\n/g,'<br>');
-                    partialAIresponse += htmlSafeString;
-                    res.write(`data: ${htmlSafeString}\n\n`);
-            }
+                    //htmlSafeString = chunk[0].content.replace(/\n/g,'<br>');
+                    partialAIresponse += chunk[0].content;
+                    res.write(`data: ${chunk[0].content}\n\n`);
+            } 
         }
         
         //End the response when the stream finishes

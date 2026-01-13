@@ -13,7 +13,7 @@ let mcpClient: MultiServerMCPClient | null = null;
 
 //const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
 const MCP_SERVER_URL = "https://chroma-mcp-server-production.up.railway.app/mcp"
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 
 const app = express();

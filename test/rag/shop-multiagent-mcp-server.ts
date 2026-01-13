@@ -50,26 +50,33 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-const MCP_SERVER_URL = 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
+const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
 
-// AI model
-// const model = new ChatGoogleGenerativeAI({
-//     model: "gemini-2.5-flash",
-//     temperature: 0,
-//     apiKey: process.env.GOOGLE_API_KEY,
-// });
 
-//Ai Model
-const model = new ChatOpenAI({
-  modelName: "openai/gpt-oss-20b",
-  streaming:true,
-  temperature: 0.7,
-  configuration: {
-  baseURL: "http://127.0.0.1:1234/v1",
 
-  }
-});
+let model: any;
+if(process.env.GOOGLE_API_KEY){
+    console.log("Using Google");
+    //prod environment
+    model = new ChatGoogleGenerativeAI({
+        model: "gemini-2.5-flash",
+        temperature: 0,
+        apiKey: process.env.GOOGLE_API_KEY,
+        streaming:true
+    });
 
+}else{
+    console.log("Using OpenAI");
+    //dev environment
+    model = new ChatOpenAI({
+        modelName: "openai/gpt-oss-20b",
+        streaming:true,
+        temperature: 0.7,
+        configuration: {
+        baseURL: "http://127.0.0.1:1234/v1",
+    }
+    });
+}
 
 
 // System prompt - just defines agent behavior, tools are auto-discovered
@@ -83,7 +90,6 @@ When helping customers:
 
 Use the search tools to find products in our catalog.
 
-End lines with double spacing.
 `;
 
 // Create MCP client that connects to HTTP server
@@ -113,29 +119,23 @@ const agent = createAgent({
             tools
         });
 
-// const chain = RunnableSequence.from([
-//     agent,
-//     new StringOutputParser(),
-// ]);
+
 
 async function runAgent(userPrompt:string,res:any) {
     
         //Run Agent with User Prompt
-        state.push({ role: "user", content: userPrompt })
-        //const response1 = await chain.stream({messages: state});    
+        state.push({ role: "user", content: userPrompt })  
         const response1 = await agent.stream({messages:state},{streamMode:'messages'});
-        // res.write(`data: ${JSON.stringify(response1)}\n\n`);
     
         let partialAIresponse = '';
-        let htmlSafeString = ''
         
         for await (const chunk of response1) {
             // Write each token chunk as an SSE data event
             if(chunk[0].constructor.name === 'AIMessageChunk' && chunk[0].content){
-                    htmlSafeString = chunk[0].content.replace(/\n/g,'<br>');
-                    partialAIresponse += htmlSafeString;
-                    res.write(`data: ${htmlSafeString}\n\n`);
-            }
+                    console.log(chunk[0].content);
+                    partialAIresponse += chunk[0].content;
+                    res.write(`${chunk[0].content}\n\n`);
+            } 
         }
         
         //End the response when the stream finishes
@@ -143,9 +143,9 @@ async function runAgent(userPrompt:string,res:any) {
         res.end();
 
         // Push AI response to state    
-        state.push({ role: "assistant", content: partialAIresponse })
+        state.push({ role: "assistant", content: partialAIresponse });
         
-        console.log(htmlSafeString)
+        
         
         return;
 }

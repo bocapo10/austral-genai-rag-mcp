@@ -55,8 +55,9 @@ const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'
 
 
 let model: any;
-
+console.log(process.env.GOOGLE_API_KEY);
 if(process.env.GOOGLE_API_KEY){
+    console.log("Using Google");
     //prod environment
     model = new ChatGoogleGenerativeAI({
         model: "gemini-2.5-flash",
@@ -66,6 +67,7 @@ if(process.env.GOOGLE_API_KEY){
     });
 
 }else{
+    console.log("OpenAI");
     //dev environment
     model = new ChatOpenAI({
         modelName: "openai/gpt-oss-20b",
@@ -118,10 +120,7 @@ const agent = createAgent({
             tools
         });
 
-// const chain = RunnableSequence.from([
-//     agent,
-//     new StringOutputParser(),
-// ]);
+
 
 async function runAgent(userPrompt:string,res:any) {
     

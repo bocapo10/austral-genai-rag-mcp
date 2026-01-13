@@ -134,6 +134,7 @@ async function runAgent(userPrompt:string,res:any) {
         for await (const chunk of response1) {
             // Write each token chunk as an SSE data event
             if(chunk[0].constructor.name === 'AIMessageChunk' && chunk[0].content){
+                    console.log(chunk[0].content);
                     partialAIresponse += chunk[0].content;
                     res.write(`data: ${chunk[0].content}\n\n`);
             } 

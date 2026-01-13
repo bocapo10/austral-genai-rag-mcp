@@ -55,7 +55,6 @@ const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'
 
 
 let model: any;
-console.log(process.env.GOOGLE_API_KEY);
 if(process.env.GOOGLE_API_KEY){
     console.log("Using Google");
     //prod environment
@@ -67,7 +66,7 @@ if(process.env.GOOGLE_API_KEY){
     });
 
 }else{
-    console.log("OpenAI");
+    console.log("Using OpenAI");
     //dev environment
     model = new ChatOpenAI({
         modelName: "openai/gpt-oss-20b",
@@ -135,7 +134,7 @@ async function runAgent(userPrompt:string,res:any) {
             if(chunk[0].constructor.name === 'AIMessageChunk' && chunk[0].content){
                     console.log(chunk[0].content);
                     partialAIresponse += chunk[0].content;
-                    res.write(`data: ${chunk[0].content}\n\n`);
+                    res.write(`${chunk[0].content}\n\n`);
             } 
         }
         
@@ -146,7 +145,7 @@ async function runAgent(userPrompt:string,res:any) {
         // Push AI response to state    
         state.push({ role: "assistant", content: partialAIresponse });
         
-        console.log(partialAIresponse);
+        
         
         return;
 }

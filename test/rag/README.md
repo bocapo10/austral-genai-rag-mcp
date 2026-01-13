@@ -1,7 +1,6 @@
 TRABAJO FINAL GENAI AUSTRAL - GUIA DE USO
 
 TIENDA DE COMPRAS DE ARTICULOS ELECTRONICOS
-
 Nota: Se ha tomado como base de este proyecto el codigo compartido en clase. Hemos extendido la funcionalidad para generar una experiencia conversacional con un asistente que ayuda al usuario tanto a buscar productos como asi tambien proveer detalles tecnicos y gestionar el posterior proceso de checkout y envio del producto. 
 
 CASO 1

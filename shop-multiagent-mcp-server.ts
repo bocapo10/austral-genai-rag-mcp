@@ -52,6 +52,31 @@ const rl = readline.createInterface({
 
 const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'; // Currently pointing to ChromaDB MCP
 
+
+
+let model: any;
+
+if(process.env.GOOGLE_API_KEY){
+    // AI model
+    model = new ChatGoogleGenerativeAI({
+        model: "gemini-2.5-flash",
+        temperature: 0,
+        apiKey: process.env.GOOGLE_API_KEY,
+    });
+
+}else{
+    model = new ChatOpenAI({
+        modelName: "openai/gpt-oss-20b",
+        streaming:true,
+        temperature: 0.7,
+        configuration: {
+        baseURL: "http://127.0.0.1:1234/v1",
+    }
+    });
+}
+
+
+
 // AI model
 // const model = new ChatGoogleGenerativeAI({
 //     model: "gemini-2.5-flash",
@@ -60,15 +85,15 @@ const MCP_SERVER_URL = process.env.MCP_SERVER_URL || 'http://localhost:8001/mcp'
 // });
 
 //Ai Model
-const model = new ChatOpenAI({
-  modelName: "openai/gpt-oss-20b",
-  streaming:true,
-  temperature: 0.7,
-  configuration: {
-  baseURL: "http://127.0.0.1:1234/v1",
+// const model = new ChatOpenAI({
+//   modelName: "openai/gpt-oss-20b",
+//   streaming:true,
+//   temperature: 0.7,
+//   configuration: {
+//   baseURL: "http://127.0.0.1:1234/v1",
 
-  }
-});
+//   }
+// });
 
 
 

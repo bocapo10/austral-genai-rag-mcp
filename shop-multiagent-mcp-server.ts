@@ -62,6 +62,7 @@ if(process.env.GOOGLE_API_KEY){
         model: "gemini-2.5-flash",
         temperature: 0,
         apiKey: process.env.GOOGLE_API_KEY,
+        streaming:true
     });
 
 }else{

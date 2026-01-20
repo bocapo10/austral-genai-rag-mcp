@@ -5,8 +5,9 @@ import { ChatOpenAI } from "@langchain/openai";
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 import * as readline from 'readline/promises';
 import express from 'express';
+import { hostname } from 'os';
 
-
+const host = '0.0.0.0'
 const state:any[] = [];
 
 const app = express();
@@ -134,11 +135,11 @@ async function runAgent(userPrompt:string,res:any) {
         for await (const chunk of response1) {
             // Write each token chunk as an SSE data event
             if(chunk[0].constructor.name === 'AIMessageChunk' && chunk[0].content){
-                    modifiedString = chunk[0].content.replace(/\s+/g, "'-'");
-                    //modif = modifiedString.replace(/(\r\n|\n|\r)/g, '<br>')
-                    //console.log(count++,modif);
-                    partialAIresponse += chunk[0].content;
-                    res.write(`data: ${modifiedString}\n\n`);
+                    //modifiedString = chunk[0].content.replace(/\s+/g, "'-'");
+                    modif = chunk[0].content.replace(/\n/g, '<|newline|>');
+                    console.log(modif);
+                    partialAIresponse += modif;
+                    res.write(`data: ${modif}\n\n`);
             } 
         }
         
@@ -149,7 +150,8 @@ async function runAgent(userPrompt:string,res:any) {
         // Push AI response to state    
         state.push({ role: "assistant", content: partialAIresponse });
         
-        
+        console.log('messages count',state.length)
+        console.log('complete response',partialAIresponse)
         
         return;
 }
@@ -163,8 +165,8 @@ app.get('/status', (req, res) => {
 app.post('/api/agent', async (req, res) => {
     const { prompt } = req.body; // Expecting a JSON body like { "prompt": "your query" }
     
-    // res.header("Content-Type", "text/event-stream");
-    res.header("Content-Type", "'text/plain; charset=utf-8'");
+    res.header("Content-Type", "text/event-stream");
+    //res.header("Content-Type", "'text/plain; charset=utf-8'");
     res.header("Cache-Control", "no-cache");
     res.header("Connection", "keep-alive");
     //res.flushHeaders();
